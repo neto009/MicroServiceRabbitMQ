@@ -1,6 +1,7 @@
 package com.iftm.genericStore.services;
 
 import com.iftm.genericStore.entities.Product;
+import com.iftm.genericStore.message.MessageProduct;
 import com.iftm.genericStore.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,9 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private MessageProduct messageProduct;
+
     public List<Product> findAll() {
         return productRepository.findAll();
     }
@@ -24,6 +28,7 @@ public class ProductService {
 
     public Product create (Product product) {
         var newProduct = productRepository.save(product);
+        messageProduct.sendMessage(newProduct);
         return newProduct;
     }
 
